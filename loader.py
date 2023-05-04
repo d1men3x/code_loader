@@ -7,7 +7,32 @@ from base64 import b64decode
 from Crypto.Cipher import AES
 
 class aes:
+    '''Class for working with AES encryption'''
     def decrypt( crypted_text:str, key:str) -> str:
+        '''
+        this function decrypt `crypted_text` with `key`
+
+        Arguments
+        =========
+        crypted_text : str
+            text crypted by AES encryption
+
+        key : str
+            32 bytes key for decrypting `crypted_text`
+
+
+        Return
+        ======
+        return : str
+            decrypted text
+
+        Exceptions
+        ==========
+        Any exceptions may caused by:
+        - Invalid key
+        - Invalid encrypted source
+
+        '''
         chiper_text = b64decode(crypted_text.encode('utf-8'))
         nonce = chiper_text[:16]
         tag = chiper_text[-16:]
@@ -20,7 +45,31 @@ class aes:
 
 
 class Loader:
-    def read(crypted_source_filename='data.bin', decryption_key='') -> str:
+    '''Class for working with encrypted by AES source'''
+    def read(crypted_source_filename:str='data.bin', decryption_key:str='') -> str:
+        '''
+        this function read encrypted source file, decrypt and execute it
+
+        Arguments
+        =========
+        crypted_source_filename : str = 'data.bin'
+            Filename of crypted source file
+
+        decryption_key : str = ''
+            Key for decryption crypted source
+
+        Return
+        ======
+        return : str
+            Decrypted source code
+
+        Exceptions
+        ==========
+        FileNotFoundError
+            Standart error (unhandled)
+        Exception("File %s not readable")
+            Can't read file by standart function, try to check file rights
+        '''
         file = open(crypted_source_filename, 'r')
 
         if not file.readable():
@@ -29,7 +78,22 @@ class Loader:
         return aes.decrypt(file.read(), decryption_key)
 
 
-    def load_source(source:(str|list), use_other_globals=False, other_globals=None):
+    def load_source(source:(str|list[str]), use_other_globals:bool=False, other_globals:dict=None):
+        '''
+        this function load and execute source code
+
+        Arguments
+        =========
+        source : (str|list)
+            source to load or list of sources
+            list of sources will be loaded sequentially 
+        
+        use_other_globals : bool
+            Flag for mark using of `other_globals`
+
+        other_globals : dict
+            Some dictionary that can be getted by call globals() in the zone of visibility you want
+        '''
         if not use_other_globals:
             global globals
             glob = globals()
