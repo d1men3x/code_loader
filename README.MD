@@ -1,6 +1,6 @@
 # code_loader by d1men3x
 
-Simple tool/module that make your deploy to unsecure places a litrle bit secure.
+Simple tool/module that make your deploy to unsecure places a litlle bit secure.
 
 
 ## Installing
