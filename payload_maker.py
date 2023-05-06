@@ -5,6 +5,7 @@
 # by d13x
 
 from sys import argv
+from getpass import getpass
 from marshal import dumps
 from base64 import b64encode
 from Crypto.Cipher import AES
@@ -111,19 +112,22 @@ if __name__ == '__main__':
                 raise Exception('File %s not writeable' % argv[2])
 
         except IndexError:
-            print('Usage:\n./payload_maker.py <source filename> <payload filename> <encryption key (optional)')
+            print('Usage:\n./payload_maker.py <source filename> <payload filename> <encryption key (Insecure)>')
             exit(1)
 
         try:
             key = argv[3]
-            if len(key) != 32:
-                print('[!] Key must be 32 bytes len')
-                payload_file.close()
-                exit(1)
 
         except IndexError:
+            key = getpass('[?] Enter key for encryption(empty for random): ')
+
+        if len(key) != 32:
+            print('[!] Key must be 32 bytes len')
+            payload_file.close()
+            exit(1)
+            
+        if key == '':
             print('[*] Encryption key not provided, they will be generated randomly')
-            key = ''
 
         payload, key = Payload.make(source_filename, key, True)
         payload_file.write(payload); payload_file.close()

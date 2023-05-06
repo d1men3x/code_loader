@@ -21,33 +21,47 @@ In this situation you can store code in encrypted state and execute only when it
 Encrypting your sources:
 
 ```shell
-./payload_maker ./example/source.py ./example/source.bin
+./payload_maker.py ./example/source.py ./example/source.bin
 ```
 
 Output:
 
-```shell
+```plain
+[?] Enter key for encryption(empty for random): 
 [*] Encryption key not provided, they will be generated randomly
 [+] Payload was successfully created
 [*] Encryption key: J1k1DpfLjOK50P419gfXP8lX1N[:E2n3
-
 ```
+
+Also you can provide key directly:
+```shell
+./payload_maker.py ./example/source.py ./example/source.bin "J1k1DpfLjOK50P419gfXP8lX1N[:E2n3"
+```
+
 
 Executing your sources:
 
 ```shell
-./loader.py ./example/source.bin "J1k1DpfLjOK50P419gfXP8lX1N[:E2n3"
+./loader.py ./example/source.bin
+[?] Enter encryption key: 
 ```
 
 Output:
 
-```shell
+```plain
 [*] Payload decrypted. Executing..
 <     13 - 7 = 6    >>>>>
 
 ```
 
-> ***Impotant note: If you execute payload from shell, don't forget clear history file, otherwise this tool becomes useless***
+As in payload_maker, here you can provide key directly:
+```shell
+./loader.py ./example/source.bin "J1k1DpfLjOK50P419gfXP8lX1N[:E2n3"
+```
+
+But in this situation your key can be view via top/htop utility
+
+> ***Impotant note: If you execute/generate payload from shell and provide key directly, don't forget clear history file, otherwise this tool becomes useless***
 
 
 

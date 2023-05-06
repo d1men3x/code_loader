@@ -1,10 +1,11 @@
-#!/ust/bin/python3
+#!/usr/bin/python3
 # Interactive Moudle:
 #   loader::aes::decrypt
 #   loader::Loader::{read,load_source}
 # by d13x
 
 from sys import argv
+from getpass import getpass
 from marshal import loads
 from base64 import b64decode
 from Crypto.Cipher import AES
@@ -114,15 +115,17 @@ if __name__ == '__main__':
     try:
         try:
             encrypted_payload_filename = argv[1]
-            key = argv[2]
+            try:
+                key = argv[2]
+            except IndexError:
+                key = getpass('[?] Enter encryption key: ')
 
             if len(key) != 32:
                 print('[!] Key must be 32 bytes len')
-                payload_file.close()
                 exit(1)
 
         except IndexError:
-            print('Usage:\n./loader.py <payload filename> <encryption key>')
+            print('Usage:\n./loader.py <payload filename> <encryption key (Insecure)>')
             exit(1)
 
         payload = Loader.read(encrypted_payload_filename, key)
